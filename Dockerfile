@@ -22,7 +22,7 @@ RUN chmod +x /usr/local/bin/*.sh
 RUN bash -x -e -c '\
   URL=$(grep "^url" /proxy.ini | cut -d"=" -f2- | xargs); \
   echo "⚙️ Using URL: $URL"; \
-  /usr/local/bin/setup-sing-box.sh --url "$URL"'
+  /usr/local/bin/setup-sing-box.sh --url "$URL" || { echo "❌ setup-sing-box.sh failed with code $?"; exit 1; }'
 
 COPY sub/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

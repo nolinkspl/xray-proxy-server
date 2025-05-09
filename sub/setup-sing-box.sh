@@ -201,8 +201,23 @@ $( [[ $PROTO == "vmess" ]] && echo "      \"alter_id\": $ALTERID,")
 }
 EOF
 
+set +x
+
+cat <<EOF > /etc/systemd/system/sing-box.service
+[Unit]
+Description=sing-box proxy service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/sing-box run --config /etc/sing-box/config.json
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 echo -e "\n✅ sing-box config saved to /etc/sing-box/config.json"
 echo "   Protocol: $PROTO"
 echo "   Server: $SERVER:$PORT"
 [[ -n $UUID ]] && echo "   UUID: $UUID"
-[[ -n $PASSWORD ]] && echo "   Password: [hidden]"
+if [[ -n $PASSWORD ]]; then echo "   Password: [hidden]"; fi

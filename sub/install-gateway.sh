@@ -171,7 +171,9 @@ EOF
 
 systemctl daemon-reexec
 systemctl daemon-reload
+
 systemctl enable init-tunnel.service
+systemctl enable sing-box
 
 # ==========================
 # ✅ Done
