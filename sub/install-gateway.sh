@@ -126,6 +126,7 @@ netfilter-persistent save
 # ==========================
 
 echo "📡 Enabling services..."
+systemctl unmask hostapd || true
 systemctl enable hostapd
 systemctl enable dnsmasq
 
