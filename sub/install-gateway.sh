@@ -91,7 +91,10 @@ sed -i "s|#DAEMON_CONF=.*|DAEMON_CONF=\"/etc/hostapd/hostapd.conf\"|" /etc/defau
 # ==========================
 
 echo "🌐 Configuring Wi-Fi interface..."
-ip link set "$WIFI_IFACE" up || true
+if ! ip link show "$WIFI_IFACE" &>/dev/null; then
+  echo "⚠️ Interface $WIFI_IFACE hasn't found. I'll create dummy..."
+  ip link add name "$WIFI_IFACE" type dummy
+fi
 ip addr flush dev "$WIFI_IFACE" || true
 ip addr add 192.168.69.1/24 dev "$WIFI_IFACE"
 

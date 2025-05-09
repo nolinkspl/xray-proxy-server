@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+trap 'echo -e "\n❌ Ошибка в строке $LINENO. Код выхода: $?"; exit 1' ERR
+
 # — URL-парсинг —
 if [[ $1 == "--url" && -n $2 ]]; then
   XRAY_URL="$2"
@@ -39,6 +41,8 @@ PASSWORD=""
 
 echo "Xray url = $XRAY_URL"
 
+set -x
+
 if [[ $XRAY_URL == vmess://* ]]; then
   CONFIG_JSON=$(echo "${XRAY_URL#vmess://}" | base64 -d 2>/dev/null)
   [[ -z $CONFIG_JSON ]] && { echo "❌ Failed to decode vmess link."; exit 1; }
@@ -57,8 +61,8 @@ elif [[ $XRAY_URL == vless://* ]]; then
   REST=${FULL#*@}
   SERVER=${REST%%:*}
   PORT=${REST#*:}; PORT=${PORT%%\?*}
-  TLS_PARAM=$(echo "$REST" | grep -oP 'tls=\K[^&]*')
-  TLS_ENABLED=$( [[ "$TLS_PARAM" == "tls" || "$TLS_PARAM" == "true" ]] && echo true || echo false )
+  SECURITY=$(echo "$REST" | grep -oP 'security=\K[^&]*' || echo "")
+  TLS_ENABLED=$( [[ "$SECURITY" == "tls" || "$SECURITY" == "reality" ]] && echo true || echo false )
 
 elif [[ $XRAY_URL == trojan://* ]]; then
   PROTO="trojan"
@@ -204,3 +208,5 @@ echo "   Protocol: $PROTO"
 echo "   Server: $SERVER:$PORT"
 [[ -n $UUID ]] && echo "   UUID: $UUID"
 [[ -n $PASSWORD ]] && echo "   Password: [hidden]"
+
+set +x

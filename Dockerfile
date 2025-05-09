@@ -24,22 +24,7 @@ RUN bash -x -e -c '\
   echo "⚙️ Using URL: $URL"; \
   /usr/local/bin/setup-sing-box.sh --url "$URL"'
 
-RUN set -e && \
-    IFACE=$(awk -F'= *' '/^iface *=/ {print $2}' /proxy.ini | tr -d '\r') && \
-    SSID=$(awk -F'= *' '/^ssid *=/ {print $2}' /proxy.ini | tr -d '\r') && \
-    PASSPHRASE=$(awk -F'= *' '/^passphrase *=/ {print $2}' /proxy.ini | tr -d '\r') && \
-    /usr/local/bin/install-gateway.sh --iface "$IFACE" --ssid "$SSID" --passphrase "$PASSPHRASE"
+COPY sub/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# ========== 🔌 Enable services ==========
-RUN systemctl enable sing-box.service \
-    && systemctl enable dnsmasq \
-    && systemctl enable hostapd \
-    && systemctl enable init-tunnel.service
-
-# ========== 📜 Show logs on startup ==========
-CMD bash -c '\
-  systemctl start init-tunnel.service && \
-  journalctl -fu sing-box -n 30 & \
-  journalctl -fu dnsmasq -n 20 & \
-  journalctl -fu hostapd -n 20 & \
-  exec /lib/systemd/systemd'
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
