@@ -41,8 +41,6 @@ PASSWORD=""
 
 echo "Xray url = $XRAY_URL"
 
-set -x
-
 if [[ $XRAY_URL == vmess://* ]]; then
   CONFIG_JSON=$(echo "${XRAY_URL#vmess://}" | base64 -d 2>/dev/null)
   [[ -z $CONFIG_JSON ]] && { echo "❌ Failed to decode vmess link."; exit 1; }
@@ -208,5 +206,3 @@ echo "   Protocol: $PROTO"
 echo "   Server: $SERVER:$PORT"
 [[ -n $UUID ]] && echo "   UUID: $UUID"
 [[ -n $PASSWORD ]] && echo "   Password: [hidden]"
-
-set +x

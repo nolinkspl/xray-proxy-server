@@ -151,7 +151,7 @@ chattr +i /etc/resolv.conf || echo "⚠️ Failed to lock /etc/resolv.conf (opti
 # ==========================
 
 echo "⚙️ Installing init-tunnel systemd service..."
-cp ./init-tunnel.sh /usr/local/bin/init-tunnel.sh
+cp ./sub/init-tunnel.sh /usr/local/bin/init-tunnel.sh
 chmod +x /usr/local/bin/init-tunnel.sh
 
 cat <<EOF > /etc/systemd/system/init-tunnel.service
