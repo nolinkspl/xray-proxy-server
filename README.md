@@ -18,7 +18,7 @@ The script:
 ### 1. Clone this repo on a Linux device (Ubuntu 22/24+)
 
 ```bash
-git clone https://github.com/your-user/xray-wifi-proxy.git
+git clone https://github.com/nolinkspl/xray-wifi-proxy.git
 cd xray-wifi-proxy
 ```
 
