@@ -20,7 +20,7 @@ if ! command -v sing-box >/dev/null; then
     *) echo "Unsupported architecture: $ARCH"; exit 1;;
   esac
 
-  VERSION="1.11.8"
+  VERSION="1.12.12"
   SING_BOX_URL="https://github.com/SagerNet/sing-box/releases/download/v$VERSION/sing-box-$VERSION-linux-$ARCH.tar.gz"
 
   echo "Trying to download $SING_BOX_URL"

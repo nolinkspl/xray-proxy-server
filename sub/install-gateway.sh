@@ -36,7 +36,7 @@ if [[ -z "$WIFI_IFACE" || -z "$SSID" || -z "$PASSPHRASE" ]]; then
   exit 1
 fi
 
-prepare-wifi.sh "$WIFI_IFACE"
+./sub/prepare-wifi.sh "$WIFI_IFACE"
 
 # ==========================
 # 📦 Install dependencies
